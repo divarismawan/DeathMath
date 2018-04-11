@@ -10,12 +10,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
+import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
 
     Random random = new Random();
-    int pointA;
-    int pointB;
+    int pointA, pointB;
+    int pointC, pointD;
     int randMath;
     int result;
     int newResult;
@@ -30,8 +31,6 @@ public class GameActivity extends AppCompatActivity {
     TextView tv_pointA;
     TextView tv_pointB;
     TextView tv_timer;
-
-
 
 
     Button btn_zero;
@@ -53,7 +52,12 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        Intent myIntent = getIntent();
+        value = myIntent.getIntExtra("result",0 );
+
         startTimer();
+
         tv_math   = (TextView)findViewById(R.id.tv_math);
         tv_result = (TextView)findViewById(R.id.tv_result);
         tv_pointA = (TextView)findViewById(R.id.tv_pointA);
@@ -76,7 +80,6 @@ public class GameActivity extends AppCompatActivity {
         btn_del    = (Button)findViewById(R.id.btn_del);
         btn_reset  = (Button)findViewById(R.id.btn_reset);
 
-        getDataIntent();
         setValue(btn_zero,0);
         setValue(btn_one,1);
         setValue(btn_two,2);
@@ -88,19 +91,15 @@ public class GameActivity extends AppCompatActivity {
         setValue(btn_eight,8);
         setValue(btn_nine,9);
         tv_point.setText("Point : "+point);
+
+        setStartGame();
         setBtn_change();
         setBtn_reset();
         setBtn_del();
+        endTimer(false);
+        resumeTimer(false);
     }
-
-
-
-
-
-
-    public void getDataIntent(){
-        Intent myIntent = getIntent();
-        value = myIntent.getIntExtra("result", 0);
+    public void setStartGame(){
         int setValue;
         if (value==0){
             setValue = diffEasy();
@@ -116,35 +115,45 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public int diffEasy(){
-        pointA = random.nextInt(25+1); // random pertama
-        pointB = random.nextInt(15+1); // random kedua
-        newResult = mathType(pointA,pointB);
+        pointA = random.nextInt(25); // random pertama
+        pointB = random.nextInt(15); // random kedua
+        pointC = random.nextInt(15); // random ketiga
+        pointC = random.nextInt(10); // random keempat
+        newResult = mathType(pointA,pointB,pointC,pointD);
         return newResult;
        }
     public int diffNormal(){
-        pointA = random.nextInt(100-25)+20; // random pertama
-        pointB = random.nextInt(100-25)+20; // random kedua
-        newResult = mathType(pointA,pointB);
+        pointA = random.nextInt(100)+20; // random pertama
+        pointB = random.nextInt(100)+20; // random kedua
+        pointC = random.nextInt(20);
+        pointD = random.nextInt(15);
+        newResult = mathType(pointA,pointB,pointC,pointD);
         return newResult;
     }
     public int diffHard(){
-        pointA = random.nextInt(250-30)+30; // random pertama
-        pointB = random.nextInt(250-30)+30; // random kedua
-        newResult = mathType(pointA,pointB);
+        pointA = random.nextInt(250)+30; // random pertama
+        pointB = random.nextInt(250)+30; // random kedua
+        pointC = random.nextInt(25);
+        pointD = random.nextInt(20);
+        newResult = mathType(pointA,pointB,pointC,pointD);
         return newResult;
     }
-    public int mathType(int pointA, int pointB){
+    public int mathType(int pointA, int pointB, int pointC, int pointD){
         randMath = random.nextInt(3); //random jenis perhitungan
-        tv_pointA.setText(""+pointA);
-        tv_pointB.setText(""+pointB);
         if (randMath==0){
             tv_math.setText("x");
-            result = pointA*pointB;
+            tv_pointA.setText(""+pointC);
+            tv_pointB.setText(""+pointD);
+            result = pointC*pointD;
         }else if (randMath==1){
             tv_math.setText("+");
+            tv_pointA.setText(""+pointA);
+            tv_pointB.setText(""+pointB);
             result = pointA+pointB;
         }else  if (randMath==2){
             tv_math.setText("-");
+            tv_pointA.setText(""+pointA);
+            tv_pointB.setText(""+pointB);
             result = pointA-pointB;
         }
         return result;
@@ -164,18 +173,16 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (tv_result.getText().equals(result)){
-                    Toast.makeText(GameActivity.this, "anda benar kakak eaaaa", Toast.LENGTH_SHORT).show();
-
-
                     String myval = tv_timer.getText().toString();
                     int timevalue = Integer.parseInt(myval);
                     point +=timevalue;
                     tv_point.setText("Point : "+point);
                     resetTimer();
                     tv_result.setText("");
-                    getDataIntent();
+                    setStartGame();
                 }else {
-                    Toast.makeText(GameActivity.this, "jawaban salah", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, "Jawaban Salah",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -206,7 +213,7 @@ public class GameActivity extends AppCompatActivity {
         btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getDataIntent();
+                setStartGame();
                 tv_result.setText("");
             }
         });
@@ -237,41 +244,39 @@ public class GameActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 tv_timer.setText(""+ millisUntilFinished / 1000);
             }
-
             public void onFinish() {
                 String displayPoint;
-
-
                 tv_timer.setText("0");
                 btn_submit.setEnabled(false);
                 displayPoint = String.valueOf(point);
                 Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
                 intent.putExtra("point", displayPoint);
-                if (value==0){
-                    intent.putExtra("result",0);
-                }else if (value==1){
-                    intent.putExtra("result",1);
-                }else if (value==2) {
-                    intent.putExtra("result", 2);
-                }
+                setStartGame();
                 startActivity(intent);
-                Toast.makeText(GameActivity.this, "Waktu Habis", Toast.LENGTH_SHORT).show();
-
             }
         }.start();
-
     }
+
+    public void endTimer(Boolean enabel){
+        if (enabel.equals(true)){
+            this.myTimer.cancel();
+            super.onPause();
+        }
+    }
+    public void resumeTimer(Boolean enable){
+        if (enable.equals(true)){
+            super.onResume();
+        }
+    }
+
     public void resetTimer(){
     this.myTimer.start();
     }
-
-
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
+        endTimer(true);
         Intent intent = new Intent(GameActivity.this, PopUpBackActivity.class);
         startActivity(intent);
-
     }
+
 }
