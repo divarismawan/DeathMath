@@ -16,9 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".DifficultyActivity" />
         <activity android:name=".GameActivity" />
-        <activity android:name=".DifficultyActivity"></activity>
+        <activity
+            android:name=".PopUpActivity"
+            android:theme="@style/AppTheme.PopUpTheme" />
+        <activity android:name=".PopUpBackActivity" android:theme="@style/AppTheme.PopUpBackTheme"></activity>
     </application>
 
 </manifest>

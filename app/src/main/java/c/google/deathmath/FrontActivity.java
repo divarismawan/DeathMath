@@ -14,7 +14,7 @@ public class FrontActivity extends AppCompatActivity {
     }
 
     public void btn_start(View view) {
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(),DifficultyActivity.class);
         startActivity(intent);
     }
 }

@@ -17,16 +17,23 @@
 
         <TextView
             android:id="@+id/tv_point"
-            android:layout_width="150dp"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
             android:text="Point : 0"
             android:textSize="20sp" />
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Time : "
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/tv_timer"
             android:layout_marginHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Time : 5s"
             android:textSize="20sp"/>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
