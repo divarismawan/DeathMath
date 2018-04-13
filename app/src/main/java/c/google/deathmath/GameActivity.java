@@ -56,8 +56,7 @@ public class GameActivity extends AppCompatActivity {
         Intent myIntent = getIntent();
         value = myIntent.getIntExtra("result",0 );
 
-        startTimer();
-
+//        startTimer();
         tv_math   = (TextView)findViewById(R.id.tv_math);
         tv_result = (TextView)findViewById(R.id.tv_result);
         tv_pointA = (TextView)findViewById(R.id.tv_pointA);
@@ -79,7 +78,6 @@ public class GameActivity extends AppCompatActivity {
         btn_change = (Button)findViewById(R.id.btn_change);
         btn_del    = (Button)findViewById(R.id.btn_del);
         btn_reset  = (Button)findViewById(R.id.btn_reset);
-
         setValue(btn_zero,0);
         setValue(btn_one,1);
         setValue(btn_two,2);
@@ -91,15 +89,19 @@ public class GameActivity extends AppCompatActivity {
         setValue(btn_eight,8);
         setValue(btn_nine,9);
         tv_point.setText("Point : "+point);
+        tv_timer.setText("16");
 
-        setStartGame();
+        getDataIntent();
         setBtn_change();
         setBtn_reset();
         setBtn_del();
         endTimer(false);
         resumeTimer(false);
     }
-    public void setStartGame(){
+    public void getDataIntent(){
+//        startTimer();
+        Intent myIntent = getIntent();
+        value = myIntent.getIntExtra("result", 0);
         int setValue;
         if (value==0){
             setValue = diffEasy();
@@ -110,7 +112,6 @@ public class GameActivity extends AppCompatActivity {
         }else if (value==2){
             setValue = diffHard();
             valButton(String.valueOf(setValue));
-
         }
     }
 
@@ -172,14 +173,18 @@ public class GameActivity extends AppCompatActivity {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int getTimer = Integer.parseInt(tv_timer.getText().toString());
+                getTimer+=5;
                 if (tv_result.getText().equals(result)){
                     String myval = tv_timer.getText().toString();
                     int timevalue = Integer.parseInt(myval);
                     point +=timevalue;
                     tv_point.setText("Point : "+point);
-                    resetTimer();
+                    tv_timer.setText(""+getTimer);
+//                    resetTimer();
+                    startTimer();
                     tv_result.setText("");
-                    setStartGame();
+                    getDataIntent();
                 }else {
                     Toast.makeText(GameActivity.this, "Jawaban Salah",
                             Toast.LENGTH_SHORT).show();
@@ -213,7 +218,7 @@ public class GameActivity extends AppCompatActivity {
         btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setStartGame();
+                getDataIntent();
                 tv_result.setText("");
             }
         });
@@ -239,11 +244,13 @@ public class GameActivity extends AppCompatActivity {
 
 
     public void startTimer(){
-        this.myTimer = new CountDownTimer(15000,1000){
+        int getTime = Integer.parseInt(tv_timer.getText().toString());
+        this.myTimer = new CountDownTimer(getTime*1000,1000){
 
             public void onTick(long millisUntilFinished) {
                 tv_timer.setText(""+ millisUntilFinished / 1000);
             }
+
             public void onFinish() {
                 String displayPoint;
                 tv_timer.setText("0");
@@ -251,14 +258,24 @@ public class GameActivity extends AppCompatActivity {
                 displayPoint = String.valueOf(point);
                 Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
                 intent.putExtra("point", displayPoint);
-                setStartGame();
+                if (value==0){
+                    intent.putExtra("result",0);
+                }else if (value==1){
+                    intent.putExtra("result",1);
+                }else if (value==2) {
+                    intent.putExtra("result", 2);
+                }
                 startActivity(intent);
+                Toast.makeText(GameActivity.this, "Waktu Habis", Toast.LENGTH_SHORT).show();
+
             }
         }.start();
+
     }
 
-    public void endTimer(Boolean enabel){
-        if (enabel.equals(true)){
+
+    public void endTimer(Boolean enable){
+        if (enable.equals(true)){
             this.myTimer.cancel();
             super.onPause();
         }
@@ -266,12 +283,15 @@ public class GameActivity extends AppCompatActivity {
     public void resumeTimer(Boolean enable){
         if (enable.equals(true)){
             super.onResume();
+            startTimer();
         }
     }
 
     public void resetTimer(){
-    this.myTimer.start();
+        this.myTimer.start();
+
     }
+
     @Override
     public void onBackPressed() {
         endTimer(true);
