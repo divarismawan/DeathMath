@@ -16,7 +16,7 @@ public class PopUpBackActivity extends GameActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_up_back);
 
-        btnCancel = (Button) findViewById(R.id.btn_cancel);
+        btnCancel = findViewById(R.id.btn_cancel);
         btnBackHome =findViewById(R.id.btn_back_home);
 
         DisplayMetrics dm = new DisplayMetrics();
@@ -39,8 +39,9 @@ public class PopUpBackActivity extends GameActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PopUpBackActivity.this, DifficultyActivity.class);
-                PopUpBackActivity.super.endTimer(true);
                 startActivity(intent);
+                finishAffinity();
+                System.exit(0);
             }
         });
     }
