@@ -17,4 +17,8 @@ public class FrontActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(),DifficultyActivity.class);
         startActivity(intent);
     }
+    public void closeAplication(View view){
+        finish();
+        moveTaskToBack(true);
+    }
 }

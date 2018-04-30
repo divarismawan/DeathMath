@@ -7,11 +7,22 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context="c.google.deathmath.PopUpBackActivity">
-
+    <ImageView
+        android:id="@+id/champion"
+        android:paddingTop="34dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/seru"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/quit"
+        />
     <TextView
+        android:id="@+id/quit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Are You Sure to Quit?"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimary"
         android:layout_centerInParent="true"/>
 
     <Button
@@ -20,6 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:background="@drawable/background_pop"
+        android:textColor="#fff"
         android:text="Yes"/>
     <Button
         android:id="@+id/btn_cancel"
@@ -27,6 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:background="@drawable/background_pop"
+        android:textColor="#fff"
         android:text="No"/>
 
 </RelativeLayout>
