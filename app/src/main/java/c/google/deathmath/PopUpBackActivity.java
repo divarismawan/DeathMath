@@ -30,7 +30,6 @@ public class PopUpBackActivity extends GameActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopUpBackActivity.super.resumeTimer(true);
                 finish();
             }
         });

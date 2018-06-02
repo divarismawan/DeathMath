@@ -12,20 +12,21 @@
         android:id="@+id/tv_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your Score is Down Here Bud!"
-        android:layout_above="@+id/tv_score_pop"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        />
+        android:layout_marginBottom="260dp"
+        android:text="Your Score is Down Here Bud!" />
+
     <TextView
         android:id="@+id/tv_score_pop"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="24sp"
-        android:text=""
-        android:layout_centerInParent="true"
-        />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="196dp"
+        android:text="1000"
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/btn_home"
@@ -41,6 +42,4 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="retry"/>
-
-
 </RelativeLayout>

@@ -12,6 +12,9 @@ import android.widget.Toast;
 import java.util.Random;
 import java.util.TimerTask;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 public class GameActivity extends AppCompatActivity {
 
     Random random = new Random();
@@ -22,8 +25,6 @@ public class GameActivity extends AppCompatActivity {
     int newResult;
     int point = 0;
     int value;
-
-    private CountDownTimer myTimer;
 
     TextView tv_math;
     TextView tv_result;
@@ -47,8 +48,14 @@ public class GameActivity extends AppCompatActivity {
     Button btn_change;
     Button btn_del;
     Button btn_reset;
+    CountDownTimer restart;
+    boolean timerrunning = FALSE;
+    long sisawaktuMilisecond = 15000;//15 detik
+    CountDownTimer myTimer;
 
-    @Override
+
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
@@ -56,7 +63,7 @@ public class GameActivity extends AppCompatActivity {
         Intent myIntent = getIntent();
         value = myIntent.getIntExtra("result",0 );
 
-//        startTimer();
+
         tv_math   = (TextView)findViewById(R.id.tv_math);
         tv_result = (TextView)findViewById(R.id.tv_result);
         tv_pointA = (TextView)findViewById(R.id.tv_pointA);
@@ -89,14 +96,13 @@ public class GameActivity extends AppCompatActivity {
         setValue(btn_eight,8);
         setValue(btn_nine,9);
         tv_point.setText("Point : "+point);
-        tv_timer.setText("16");
 
         getDataIntent();
         setBtn_change();
         setBtn_reset();
         setBtn_del();
-        endTimer(false);
-        resumeTimer(false);
+
+        restarttimer(0);
     }
     public void getDataIntent(){
 //        startTimer();
@@ -122,7 +128,7 @@ public class GameActivity extends AppCompatActivity {
         pointC = random.nextInt(10); // random keempat
         newResult = mathType(pointA,pointB,pointC,pointD);
         return newResult;
-       }
+    }
     public int diffNormal(){
         pointA = random.nextInt(100)+20; // random pertama
         pointB = random.nextInt(100)+20; // random kedua
@@ -173,16 +179,21 @@ public class GameActivity extends AppCompatActivity {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int getTimer = Integer.parseInt(tv_timer.getText().toString());
-                getTimer+=5;
+                // int getTimer = Integer.parseInt(tv_timer.getText().toString());
+                //getTimer+=5;
                 if (tv_result.getText().equals(result)){
                     String myval = tv_timer.getText().toString();
                     int timevalue = Integer.parseInt(myval);
                     point +=timevalue;
                     tv_point.setText("Point : "+point);
-                    tv_timer.setText(""+getTimer);
+                    myTimer.cancel();
+                    restarttimer(5000);
+                    //sisawaktuMilisecond+=5000;
+
+                    //updateTimer(5000);
+                    //tv_timer.setText(""+getTimer);
 //                    resetTimer();
-                    startTimer();
+
                     tv_result.setText("");
                     getDataIntent();
                 }else {
@@ -243,17 +254,18 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-    public void startTimer(){
-        int getTime = Integer.parseInt(tv_timer.getText().toString());
-        this.myTimer = new CountDownTimer(getTime*1000,1000){
+    public void restarttimer(int addtime){
+        myTimer = new CountDownTimer(sisawaktuMilisecond+addtime,1000){
 
-            public void onTick(long millisUntilFinished) {
-                tv_timer.setText(""+ millisUntilFinished / 1000);
+            public void onTick(long l) {
+                sisawaktuMilisecond = l;
+                updateTimer();
+                //tv_timer.setText(""+ millisUntilFinished / 1000);
             }
 
             public void onFinish() {
                 String displayPoint;
-                tv_timer.setText("0");
+                //tv_timer.setText("0");
                 btn_submit.setEnabled(false);
                 displayPoint = String.valueOf(point);
                 Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
@@ -267,36 +279,37 @@ public class GameActivity extends AppCompatActivity {
                 }
                 startActivity(intent);
                 Toast.makeText(GameActivity.this, "Waktu Habis", Toast.LENGTH_SHORT).show();
-
+                sisawaktuMilisecond = 15000;
             }
         }.start();
-
+        timerrunning = true;
     }
 
+    public void updateTimer(){
+        int second = (int) (sisawaktuMilisecond /1000);
 
-    public void endTimer(Boolean enable){
-        if (enable.equals(true)){
-            this.myTimer.cancel();
-            super.onPause();
+        tv_timer.setText("" +second);
+    }
+
+    public void startOrStop(){
+        if(timerrunning){
+            stopTimer();
+        }else{
+            restarttimer(0  );
         }
     }
-    public void resumeTimer(Boolean enable){
-        if (enable.equals(true)){
-            super.onResume();
-            startTimer();
-        }
+
+    public void stopTimer(){
+        myTimer.cancel();
+
+        if (timerrunning == TRUE)timerrunning = false;
     }
-
-    public void resetTimer(){
-        this.myTimer.start();
-
-    }
-
     @Override
     public void onBackPressed() {
-        endTimer(true);
+        //this.myTimer.cancel();
         Intent intent = new Intent(GameActivity.this, PopUpBackActivity.class);
         startActivity(intent);
+
     }
 
 }
