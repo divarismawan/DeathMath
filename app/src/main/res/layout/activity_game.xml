@@ -20,7 +20,7 @@
             android:id="@+id/tv_point"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:text="Point : 0"
+            android:text="Point :0"
             android:textSize="20sp" />
         <TextView
             android:textColor="#ffffff"
@@ -52,7 +52,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:textSize="50sp"
-            android:textColor="#8e0303"
+            android:textColor="@color/colorPrimary"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="10dp"/>
         <TextView
@@ -61,14 +61,14 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:textSize="50sp"
-            android:textColor="#7301f5"
+            android:textColor="@color/colorPrimary"
             android:layout_marginVertical="10dp"/>
 
         <TextView
             android:id="@+id/tv_pointB"
             android:gravity="center_horizontal"
             android:layout_width="95dp"
-            android:textColor="#033c5b"
+            android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="10dp"

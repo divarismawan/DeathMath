@@ -26,6 +26,7 @@
         android:background="@drawable/background_btn"
         />
     <Button
+        android:onClick="closeAplication"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Exit"
