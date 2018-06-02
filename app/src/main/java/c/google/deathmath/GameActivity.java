@@ -260,7 +260,6 @@ public class GameActivity extends AppCompatActivity {
             public void onTick(long l) {
                 sisawaktuMilisecond = l;
                 updateTimer();
-                //tv_timer.setText(""+ millisUntilFinished / 1000);
             }
 
             public void onFinish() {
@@ -291,22 +290,8 @@ public class GameActivity extends AppCompatActivity {
         tv_timer.setText("" +second);
     }
 
-    public void startOrStop(){
-        if(timerrunning){
-            stopTimer();
-        }else{
-            restarttimer(0  );
-        }
-    }
-
-    public void stopTimer(){
-        myTimer.cancel();
-
-        if (timerrunning == TRUE)timerrunning = false;
-    }
     @Override
     public void onBackPressed() {
-        //this.myTimer.cancel();
         Intent intent = new Intent(GameActivity.this, PopUpBackActivity.class);
         startActivity(intent);
 
