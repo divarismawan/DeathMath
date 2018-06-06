@@ -10,20 +10,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
-import java.util.TimerTask;
 
 import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 
 public class GameActivity extends AppCompatActivity {
 
     Random random = new Random();
-    int pointA, pointB;
-    int pointC, pointD;
-    int randMath;
-    int result;
+    int pointA, pointB; //set value question
+    int pointC, pointD; //set value question
+    int pointDiffValue; //set score by difficulty
+    int randMath; // change type math
+    int result; // result math
     int newResult;
-    int point = 0;
+    int point = 0; //default score
     int value;
 
     TextView tv_math;
@@ -50,7 +49,7 @@ public class GameActivity extends AppCompatActivity {
     Button btn_reset;
     CountDownTimer restart;
     boolean timerrunning = FALSE;
-    long sisawaktuMilisecond = 15000;//15 detik
+    long sisawaktuMilisecond = 15000;//default
     CountDownTimer myTimer;
 
 
@@ -59,10 +58,8 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
         Intent myIntent = getIntent();
         value = myIntent.getIntExtra("result",0 );
-
 
         tv_math   = (TextView)findViewById(R.id.tv_math);
         tv_result = (TextView)findViewById(R.id.tv_result);
@@ -85,6 +82,7 @@ public class GameActivity extends AppCompatActivity {
         btn_change = (Button)findViewById(R.id.btn_change);
         btn_del    = (Button)findViewById(R.id.btn_del);
         btn_reset  = (Button)findViewById(R.id.btn_reset);
+
         setValue(btn_zero,0);
         setValue(btn_one,1);
         setValue(btn_two,2);
@@ -95,6 +93,7 @@ public class GameActivity extends AppCompatActivity {
         setValue(btn_seven,7);
         setValue(btn_eight,8);
         setValue(btn_nine,9);
+
         tv_point.setText("Point : "+point);
 
         getDataIntent();
@@ -105,47 +104,49 @@ public class GameActivity extends AppCompatActivity {
         restarttimer(0);
     }
     public void getDataIntent(){
-//        startTimer();
         Intent myIntent = getIntent();
         value = myIntent.getIntExtra("result", 0);
         int setValue;
         if (value==0){
             setValue = diffEasy();
-            valButton(String.valueOf(setValue));
+            pointDiffValue = 1;
+            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
         }else if (value==1){
             setValue = diffNormal();
-            valButton(String.valueOf(setValue));
+            pointDiffValue = 3;
+            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
         }else if (value==2){
             setValue = diffHard();
-            valButton(String.valueOf(setValue));
+            pointDiffValue = 5;
+            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
         }
     }
 
     public int diffEasy(){
-        pointA = random.nextInt(25); // random pertama
-        pointB = random.nextInt(15); // random kedua
-        pointC = random.nextInt(15); // random ketiga
-        pointC = random.nextInt(10); // random keempat
-        newResult = mathType(pointA,pointB,pointC,pointD);
+        pointA = random.nextInt(25); // random penjumlahan dan pengurangan
+        pointB = random.nextInt(15); // random penjumlahan dan pengurangan
+        pointC = random.nextInt(15); // random untuk perkalian
+        pointD = random.nextInt(10); // random untuk perkalian
+        newResult = mathType(pointA,pointB,pointC,pointD); //insert value for true answer
         return newResult;
     }
     public int diffNormal(){
-        pointA = random.nextInt(100)+20; // random pertama
-        pointB = random.nextInt(100)+20; // random kedua
-        pointC = random.nextInt(20);
-        pointD = random.nextInt(15);
-        newResult = mathType(pointA,pointB,pointC,pointD);
+        pointA = random.nextInt(50)+20; // random penjumlahan dan pengurangan
+        pointB = random.nextInt(30)+20; // random penjumlahan dan pengurangan
+        pointC = random.nextInt(20); // random untuk perkalian
+        pointD = random.nextInt(15); // random untuk perkalian
+        newResult = mathType(pointA,pointB,pointC,pointD); //insert value for true answer
         return newResult;
     }
     public int diffHard(){
-        pointA = random.nextInt(250)+30; // random pertama
-        pointB = random.nextInt(250)+30; // random kedua
-        pointC = random.nextInt(25);
-        pointD = random.nextInt(20);
-        newResult = mathType(pointA,pointB,pointC,pointD);
+        pointA = random.nextInt(75)+30; // random penjumlahan dan pengurangan
+        pointB = random.nextInt(75)+30; // random penjumlahan dan pengurangan
+        pointC = random.nextInt(25); // random untuk perkalian
+        pointD = random.nextInt(20); // random untuk perkalian
+        newResult = mathType(pointA,pointB,pointC,pointD); //insert value for true answer
         return newResult;
     }
-    public int mathType(int pointA, int pointB, int pointC, int pointD){
+    public int mathType(int pointA, int pointB, int pointC, int pointD){ //set true answer
         randMath = random.nextInt(3); //random jenis perhitungan
         if (randMath==0){
             tv_math.setText("x");
@@ -175,56 +176,43 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    public void valButton(final String result){
+    public void setBtnSubmit(final String result, final int pointDiffValue){
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // int getTimer = Integer.parseInt(tv_timer.getText().toString());
-                //getTimer+=5;
                 if (tv_result.getText().equals(result)){
                     String myval = tv_timer.getText().toString();
                     int timevalue = Integer.parseInt(myval);
-                    point +=timevalue;
+                    point +=setScore(timevalue,pointDiffValue );
                     tv_point.setText("Point : "+point);
                     myTimer.cancel();
                     restarttimer(5000);
-                    //sisawaktuMilisecond+=5000;
-
-                    //updateTimer(5000);
-                    //tv_timer.setText(""+getTimer);
-//                    resetTimer();
-
                     tv_result.setText("");
                     getDataIntent();
                 }else {
-                    Toast.makeText(GameActivity.this, "Jawaban Salah",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, "Jawaban Salah", Toast.LENGTH_SHORT).show();
+                    myTimer.cancel();
+                    restarttimer(-3000);
+                    tv_result.setText("");
                 }
             }
         });
     }
 
-    public void setBtn_change(){
-        btn_change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String st = tv_result.getText().toString();
-                String newVal;
-
-                if(st.isEmpty()){
-                    tv_result.setText("-");
-                }else{
-                    if(st.substring(0,1).equals("-")){
-                        newVal = st.replace("-","");
-                        tv_result.setText(""+newVal);
-                    }else if (!st.equals("")){
-                        tv_result.setText("-"+st);
-                    }
-                }
-            }
-        });
+    public int setScore(int time, int pointDiffValue){  // set score by diff and time
+        int result = 0;
+        if (time<=10){
+            result = 5*pointDiffValue;
+        }else if (time>10 && time<=20){
+            result = 7*pointDiffValue;
+        }else if (time>20){
+            result = 10*pointDiffValue;
+        }
+            return result;
     }
 
+
+//=======================================Dont Touch!!! 1/2===========================================//
     public void setBtn_reset(){
         btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,6 +241,34 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    public void setBtn_change(){
+        btn_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String st = tv_result.getText().toString();
+                String newVal;
+
+                if(st.isEmpty()){
+                    tv_result.setText("-");
+                }else{
+                    if(st.substring(0,1).equals("-")){
+                        newVal = st.replace("-","");
+                        tv_result.setText(""+newVal);
+                    }else if (!st.equals("")){
+                        tv_result.setText("-"+st);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(GameActivity.this, PopUpBackActivity.class);
+        startActivity(intent);
+
+    }
+//=======================================Dont Touch!!! 2/2===========================================//
 
     public void restarttimer(int addtime){
         myTimer = new CountDownTimer(sisawaktuMilisecond+addtime,1000){
@@ -264,7 +280,6 @@ public class GameActivity extends AppCompatActivity {
 
             public void onFinish() {
                 String displayPoint;
-                //tv_timer.setText("0");
                 btn_submit.setEnabled(false);
                 displayPoint = String.valueOf(point);
                 Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
@@ -286,15 +301,11 @@ public class GameActivity extends AppCompatActivity {
 
     public void updateTimer(){
         int second = (int) (sisawaktuMilisecond /1000);
-
         tv_timer.setText("" +second);
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(GameActivity.this, PopUpBackActivity.class);
-        startActivity(intent);
 
-    }
+
+
 
 }
