@@ -2,6 +2,7 @@ package c.google.deathmath;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +18,21 @@ import static java.lang.Boolean.FALSE;
 
 public class GameActivity extends AppCompatActivity {
 
+    MediaPlayer msc_true;
+    MediaPlayer msc_false;
     Random random = new Random();
+
+
+
+
     int pointA, pointB; //set value question
     int pointC, pointD; //set value question
     int pointDiffValue;
+
     final int intEasy = 1; //set score by difficulty
     final int intNormal = 6; //set score by difficulty
     final int intHard = 9; //set score by difficulty
+
     int randMath; // change type math
     int result; // result math
     int newResult;
@@ -203,13 +212,16 @@ public class GameActivity extends AppCompatActivity {
                     myTimer.cancel();
                     restarttimer(5000);
                     levelUpDiff(point);
-//                    getDataIntent();
                     tv_result.setText("");
+                    msc_true  = MediaPlayer.create(getApplicationContext(),R.raw.m_true);
+                    msc_true.start();
                 }else {
                     Toast.makeText(GameActivity.this, "Jawaban Salah", Toast.LENGTH_SHORT).show();
                     myTimer.cancel();
                     restarttimer(-3000);
                     tv_result.setText("");
+                    msc_false = MediaPlayer.create(getApplicationContext(),R.raw.m_false);
+                    msc_false.start();
                 }
             }
         });
@@ -249,7 +261,7 @@ public class GameActivity extends AppCompatActivity {
             setBtnSubmit(String.valueOf(setValue), pointDiffValue);
         }
     }
-//=======================================Dont Touch!!! 1/2===========================================//
+
     public void setBtn_reset(){
         btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,7 +317,6 @@ public class GameActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-//=======================================Dont Touch!!! 2/2===========================================//
 
     public void restarttimer(int addtime){
         myTimer = new CountDownTimer(sisawaktuMilisecond+addtime,1000){
