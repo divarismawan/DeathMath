@@ -8,24 +8,41 @@
     android:padding="16dp"
     tools:context="c.google.deathmath.PopUpActivity">
 
+    <ImageView
+        android:id="@+id/iv_message"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_difficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_message"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="Difficulty" />
     <TextView
         android:id="@+id/tv_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/tv_difficulty"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="260dp"
+        android:layout_marginBottom="24dp"
         android:text="Your Score is Down Here Bud!" />
 
     <TextView
         android:id="@+id/tv_score_pop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/tv_header"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="196dp"
         android:text="1000"
+        android:textStyle="bold"
         android:textSize="24sp" />
 
     <Button
@@ -34,6 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:background="@drawable/background_pop"
+        android:textColor="#fff"
         android:text="Home"/>
     <Button
         android:id="@+id/btn_retry"
@@ -41,5 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:background="@drawable/background_pop"
+        android:textColor="#fff"
         android:text="retry"/>
 </RelativeLayout>
