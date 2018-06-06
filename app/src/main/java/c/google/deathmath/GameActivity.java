@@ -18,11 +18,14 @@ public class GameActivity extends AppCompatActivity {
     Random random = new Random();
     int pointA, pointB; //set value question
     int pointC, pointD; //set value question
-    int pointDiffValue; //set score by difficulty
+    int pointDiffValue;
+    final int intEasy = 1; //set score by difficulty
+    final int intNormal = 6; //set score by difficulty
+    final int intHard = 9; //set score by difficulty
     int randMath; // change type math
     int result; // result math
     int newResult;
-    int point = 0; //default score
+    int score = 0; //default score
     int value;
 
     TextView tv_math;
@@ -47,7 +50,7 @@ public class GameActivity extends AppCompatActivity {
     Button btn_change;
     Button btn_del;
     Button btn_reset;
-    CountDownTimer restart;
+
     boolean timerrunning = FALSE;
     long sisawaktuMilisecond = 15000;//default
     CountDownTimer myTimer;
@@ -94,7 +97,7 @@ public class GameActivity extends AppCompatActivity {
         setValue(btn_eight,8);
         setValue(btn_nine,9);
 
-        tv_point.setText("Point : "+point);
+        tv_point.setText("Point : "+score);
 
         getDataIntent();
         setBtn_change();
@@ -109,15 +112,15 @@ public class GameActivity extends AppCompatActivity {
         int setValue;
         if (value==0){
             setValue = diffEasy();
-            pointDiffValue = 1;
+            pointDiffValue = intEasy;
             setBtnSubmit(String.valueOf(setValue), pointDiffValue);
         }else if (value==1){
             setValue = diffNormal();
-            pointDiffValue = 3;
+            pointDiffValue = intNormal;
             setBtnSubmit(String.valueOf(setValue), pointDiffValue);
         }else if (value==2){
             setValue = diffHard();
-            pointDiffValue = 5;
+            pointDiffValue = intHard;
             setBtnSubmit(String.valueOf(setValue), pointDiffValue);
         }
     }
@@ -183,12 +186,12 @@ public class GameActivity extends AppCompatActivity {
                 if (tv_result.getText().equals(result)){
                     String myval = tv_timer.getText().toString();
                     int timevalue = Integer.parseInt(myval);
-                    point +=setScore(timevalue,pointDiffValue );
-                    tv_point.setText("Point : "+point);
+                    score +=setScore(timevalue,pointDiffValue );
+                    tv_point.setText("Point : "+score);
                     myTimer.cancel();
                     restarttimer(5000);
                     tv_result.setText("");
-                    getDataIntent();
+                    levelUpDiff(score);
                 }else {
                     Toast.makeText(GameActivity.this, "Jawaban Salah", Toast.LENGTH_SHORT).show();
                     myTimer.cancel();
@@ -211,7 +214,28 @@ public class GameActivity extends AppCompatActivity {
             return result;
     }
 
-
+    public void levelUpDiff(int score){
+        int setValue;
+        if (score<=100){
+            setValue = diffEasy();
+            pointDiffValue = intEasy;
+            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+        }else if (score>100 && score<=400){
+            if (score>=200 && score <210){
+                Toast.makeText(this, "Level Up", Toast.LENGTH_SHORT).show();
+            }
+            setValue = diffNormal();
+            pointDiffValue = intNormal;
+            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+        }else if (score>400){
+            if (score>=400 && score<410){
+                Toast.makeText(this, "Level Up", Toast.LENGTH_SHORT).show();
+            }
+            setValue = diffHard();
+            pointDiffValue = intHard;
+            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+        }
+    }
 //=======================================Dont Touch!!! 1/2===========================================//
     public void setBtn_reset(){
         btn_reset.setOnClickListener(new View.OnClickListener() {
@@ -279,11 +303,11 @@ public class GameActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                String displayPoint;
+                String displayScore;
                 btn_submit.setEnabled(false);
-                displayPoint = String.valueOf(point);
+                displayScore = String.valueOf(score);
                 Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
-                intent.putExtra("point", displayPoint);
+                intent.putExtra("point", displayScore);
                 if (value==0){
                     intent.putExtra("result",0);
                 }else if (value==1){
