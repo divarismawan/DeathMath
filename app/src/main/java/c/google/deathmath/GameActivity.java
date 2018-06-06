@@ -25,7 +25,7 @@ public class GameActivity extends AppCompatActivity {
     int randMath; // change type math
     int result; // result math
     int newResult;
-    int score = 0; //default score
+    int point = 0; //default score
     int value;
 
     TextView tv_math;
@@ -97,7 +97,7 @@ public class GameActivity extends AppCompatActivity {
         setValue(btn_eight,8);
         setValue(btn_nine,9);
 
-        tv_point.setText("Point : "+score);
+        tv_point.setText("Point : "+point);
 
         getDataIntent();
         setBtn_change();
@@ -174,6 +174,7 @@ public class GameActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 tv_result.setText(tv_result.getText()+""+val);
             }
         });
@@ -186,12 +187,13 @@ public class GameActivity extends AppCompatActivity {
                 if (tv_result.getText().equals(result)){
                     String myval = tv_timer.getText().toString();
                     int timevalue = Integer.parseInt(myval);
-                    score +=setScore(timevalue,pointDiffValue );
-                    tv_point.setText("Point : "+score);
+                    point +=setScore(timevalue,pointDiffValue );
+                    tv_point.setText("Score : "+point);
                     myTimer.cancel();
                     restarttimer(5000);
+                    levelUpDiff(point);
+//                    getDataIntent();
                     tv_result.setText("");
-                    levelUpDiff(score);
                 }else {
                     Toast.makeText(GameActivity.this, "Jawaban Salah", Toast.LENGTH_SHORT).show();
                     myTimer.cancel();
@@ -305,7 +307,7 @@ public class GameActivity extends AppCompatActivity {
             public void onFinish() {
                 String displayScore;
                 btn_submit.setEnabled(false);
-                displayScore = String.valueOf(score);
+                displayScore = String.valueOf(point);
                 Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
                 intent.putExtra("point", displayScore);
                 if (value==0){

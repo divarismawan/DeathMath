@@ -4,4 +4,14 @@
     <color name="colorPrimaryDark">#002245</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorLine">#f1919191</color>
+    <color name="colorQuestNumber">#000000</color>
+
+    <!--for number-->
+    <color name="colorNumber">#fff</color>
+    <color name="colorButtonNumber">#24ffffff</color>
+
+    <!--for button Item -->
+    <color name="colorItem">#fff</color>
+    <color name="colorButtonItem">#ff9600</color>
+
 </resources>

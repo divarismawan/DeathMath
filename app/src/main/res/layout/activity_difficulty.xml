@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="c.google.deathmath.DifficultyActivity"
     android:orientation="vertical"
-    android:background="@drawable/mount">
+    android:background="@drawable/sky">
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,7 +15,7 @@
         android:paddingHorizontal="40dp"
         android:layout_gravity="center"
         android:layout_marginTop="90dp"
-        android:text="DIFFICULTY"
+        android:text="Death Math"
         android:fontFamily="monospace"
         android:textColor="#fff"
         android:textSize="30sp"
