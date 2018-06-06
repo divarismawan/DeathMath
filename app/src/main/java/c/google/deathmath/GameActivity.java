@@ -1,7 +1,9 @@
 package c.google.deathmath;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -170,12 +172,21 @@ public class GameActivity extends AppCompatActivity {
         return result;
     }
 
-    public void setValue(Button button, final int val){
+    public void setValue(final Button button, final int val){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 tv_result.setText(tv_result.getText()+""+val);
+                button.setBackgroundColor(getResources().getColor(R.color.colorHover));
+                new Handler().postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                button.setBackgroundColor(getResources().getColor(R.color.colorButtonNumber));
+                            }
+                        },100
+                );
+
             }
         });
     }
