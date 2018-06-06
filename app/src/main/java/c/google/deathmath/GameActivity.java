@@ -351,9 +351,4 @@ public class GameActivity extends AppCompatActivity {
         int second = (int) (sisawaktuMilisecond /1000);
         tv_timer.setText("" +second);
     }
-
-
-
-
-
 }
