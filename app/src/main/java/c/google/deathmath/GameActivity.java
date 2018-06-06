@@ -223,8 +223,9 @@ public class GameActivity extends AppCompatActivity {
             pointDiffValue = intEasy;
             setBtnSubmit(String.valueOf(setValue), pointDiffValue);
         }else if (score>100 && score<=400){
-            if (score>=200 && score <210){
+            if (score>=100 && score <110){
                 Toast.makeText(this, "Level Up", Toast.LENGTH_SHORT).show();
+                value = 1;
             }
             setValue = diffNormal();
             pointDiffValue = intNormal;
@@ -232,6 +233,7 @@ public class GameActivity extends AppCompatActivity {
         }else if (score>400){
             if (score>=400 && score<410){
                 Toast.makeText(this, "Level Up", Toast.LENGTH_SHORT).show();
+                value = 2;
             }
             setValue = diffHard();
             pointDiffValue = intHard;
@@ -310,6 +312,7 @@ public class GameActivity extends AppCompatActivity {
                 displayScore = String.valueOf(point);
                 Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
                 intent.putExtra("point", displayScore);
+                intent.putExtra("score", point);
                 if (value==0){
                     intent.putExtra("result",0);
                 }else if (value==1){
