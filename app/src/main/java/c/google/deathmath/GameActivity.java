@@ -21,7 +21,6 @@ public class GameActivity extends AppCompatActivity {
 
     MediaPlayer msc_true;
     MediaPlayer msc_false;
-    MediaPlayer msc_number;
     Random random = new Random();
 
 
@@ -30,7 +29,6 @@ public class GameActivity extends AppCompatActivity {
     int pointA, pointB; //set value question
     int pointC, pointD; //set value question
     int pointDiffValue;
-    int level_check_status; // untuk naik level
     final int intEasy = 1; //set score by difficulty
     final int intNormal = 6; //set score by difficulty
     final int intHard = 9; //set score by difficulty
@@ -39,7 +37,7 @@ public class GameActivity extends AppCompatActivity {
     int result; // result math
     int newResult;
     int point = 0; //default score
-    int value;
+    int value; // untuk naik level
 
     TextView tv_math;
     TextView tv_result;
@@ -189,7 +187,6 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tv_result.setText(tv_result.getText()+""+val);
-                msc_number = MediaPlayer.create(getApplicationContext(),R.raw.m_number );
                 button.setBackgroundColor(getResources().getColor(R.color.colorHover));
                 new Handler().postDelayed(
                         new Runnable() {
@@ -215,10 +212,10 @@ public class GameActivity extends AppCompatActivity {
                     tv_point.setText("Score : "+point);
                     myTimer.cancel();
                     restarttimer(5000);
-                    levelUpDiff(point);
                     tv_result.setText("");
                     msc_true  = MediaPlayer.create(getApplicationContext(),R.raw.m_true);
                     msc_true.start();
+                    levelUpDiff(point);
                 }else {
                     Toast.makeText(GameActivity.this, "Jawaban Salah", Toast.LENGTH_SHORT).show();
                     myTimer.cancel();
@@ -240,16 +237,13 @@ public class GameActivity extends AppCompatActivity {
         }else if (time>20){
             result = 10*pointDiffValue;
         }
-            return result;
+        return result;
     }
 
     public void levelUpDiff(int score){
         int setValue;
-
-
-        switch(level_check_status){
-
-            case 1:
+        switch(value){
+            case 0:
                 if (score<=100){
                     setValue = diffEasy();
                     pointDiffValue = intEasy;
@@ -271,7 +265,7 @@ public class GameActivity extends AppCompatActivity {
                 }
                 break;
 
-            case  2:
+            case  1:
 
                 if(score<400){
                     setValue = diffNormal();
@@ -288,13 +282,11 @@ public class GameActivity extends AppCompatActivity {
 
                 break;
 
-            case 3:
+            case 2:
                 setValue = diffHard();
                 pointDiffValue = intHard;
                 setBtnSubmit(String.valueOf(setValue), pointDiffValue);
                 break;
-
-
         }
 
 //        if (score<=100){
