@@ -21,6 +21,7 @@ public class GameActivity extends AppCompatActivity {
 
     MediaPlayer msc_true;
     MediaPlayer msc_false;
+    MediaPlayer msc_number;
     Random random = new Random();
 
     int pointA, pointB; //set value question
@@ -183,6 +184,7 @@ public class GameActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                msc_number = MediaPlayer.create(getApplicationContext(),R.raw.m_number);
                 tv_result.setText(tv_result.getText()+""+val);
                 button.setBackgroundColor(getResources().getColor(R.color.colorHover));
                 new Handler().postDelayed(
