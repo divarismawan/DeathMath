@@ -23,9 +23,6 @@ public class GameActivity extends AppCompatActivity {
     MediaPlayer msc_false;
     Random random = new Random();
 
-
-
-
     int pointA, pointB; //set value question
     int pointC, pointD; //set value question
     int pointDiffValue;
