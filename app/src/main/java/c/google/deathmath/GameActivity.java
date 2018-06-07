@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.Random;
 
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -29,7 +30,7 @@ public class GameActivity extends AppCompatActivity {
     int pointA, pointB; //set value question
     int pointC, pointD; //set value question
     int pointDiffValue;
-
+    int level_check_status; // untuk naik level
     final int intEasy = 1; //set score by difficulty
     final int intNormal = 6; //set score by difficulty
     final int intHard = 9; //set score by difficulty
@@ -64,6 +65,7 @@ public class GameActivity extends AppCompatActivity {
     Button btn_reset;
 
     boolean timerrunning = FALSE;
+    boolean toast_status = FALSE;
     long sisawaktuMilisecond = 15000;//default
     CountDownTimer myTimer;
 
@@ -243,27 +245,88 @@ public class GameActivity extends AppCompatActivity {
 
     public void levelUpDiff(int score){
         int setValue;
-        if (score<=100){
-            setValue = diffEasy();
-            pointDiffValue = intEasy;
-            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
-        }else if (score>100 && score<=400){
-            if (score>=100 && score <110){
-                Toast.makeText(this, "Level Up", Toast.LENGTH_SHORT).show();
-                value = 1;
-            }
-            setValue = diffNormal();
-            pointDiffValue = intNormal;
-            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
-        }else if (score>400){
-            if (score>=400 && score<410){
-                Toast.makeText(this, "Level Up", Toast.LENGTH_SHORT).show();
-                value = 2;
-            }
-            setValue = diffHard();
-            pointDiffValue = intHard;
-            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+
+
+        switch(level_check_status){
+
+            case 1:
+                if (score<=100){
+                    setValue = diffEasy();
+                    pointDiffValue = intEasy;
+                    setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+                }else if (score>100 && score<=400){
+                    toast_status = TRUE;
+                    ToastShow();
+                    value = 1;
+                    setValue = diffNormal();
+                    pointDiffValue = intNormal;
+                    setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+                }else if (score>400){
+                    toast_status = TRUE;
+                    ToastShow();
+                    value = 2;
+                    setValue = diffHard();
+                    pointDiffValue = intHard;
+                    setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+                }
+                break;
+
+            case  2:
+
+                if(score<400){
+                    setValue = diffNormal();
+                    pointDiffValue = intNormal;
+                    setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+                }else{
+                    toast_status = TRUE;
+                    ToastShow();
+                    value = 2;
+                    setValue = diffHard();
+                    pointDiffValue = intHard;
+                    setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+                }
+
+                break;
+
+            case 3:
+                setValue = diffHard();
+                pointDiffValue = intHard;
+                setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+                break;
+
+
         }
+
+//        if (score<=100){
+//            setValue = diffEasy();
+//            pointDiffValue = intEasy;
+//            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+//        }else if (score>100 && score<=400){
+//            if (score>=100 && score <110){
+//                Toast.makeText(this, "Level Up", Toast.LENGTH_SHORT).show();
+//                value = 1;
+//            }
+//            setValue = diffNormal();
+//            pointDiffValue = intNormal;
+//            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+//        }else if (score>400){
+//            if (score>=400 && score<410){
+//                Toast.makeText(this, "Level Up", Toast.LENGTH_SHORT).show();
+//                value = 2;
+//            }
+//            setValue = diffHard();
+//            pointDiffValue = intHard;
+//            setBtnSubmit(String.valueOf(setValue), pointDiffValue);
+//        }
+    }
+
+    public void ToastShow(){
+
+        if(toast_status){
+            Toast.makeText(this, "Level Up", Toast.LENGTH_SHORT).show();
+            toast_status = FALSE;
+        }
+
     }
 
     public void setBtn_reset(){
